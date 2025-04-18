@@ -23,9 +23,11 @@ std::pair<int, int>  QLearningAgent::chooseMove (const Board& board) {
 
     // find best q value move
     const std::string state = board.getStateString();
-    auto qValues = qTable[state];
     auto bestMove = availableMoves[0];
     double bestQ = -1 * std::numeric_limits<double>::infinity();
+
+    if (!qTable.count(state)) qTable[state] = std::vector<double>(9, 0.0);
+    auto& qValues = qTable[state];
 
     for (const auto& move : availableMoves) {
         const int i = actionToIndex(move);
