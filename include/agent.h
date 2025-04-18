@@ -27,7 +27,7 @@ public:
     // lr -> learning rate (alpha)
     // df -> discount factor (gamma)
     // er -> exploration rate (epsilon)
-    QLearningAgent (double lr = 0.1, double df = 0.9, double er = 0.3);
+    QLearningAgent (double lr = 0.5, double df = 0.9, double er = 0.3);
     
     std::pair<int, int> chooseMove (const Board& board);
     void learn (const Board& prevBoard, 

@@ -1,5 +1,6 @@
 #include <iostream>
 #include <chrono>
+#include <algorithm>
 #include "../include/board.h"
 #include "../include/agent.h"
 
@@ -16,7 +17,9 @@ void train (QLearningAgent& ai, int episodes) {
         Board game;
         Square curP = Square::XSQ;
 
-        ai.setExplorationRate(0.3 * (1.0 - i / static_cast<double>(episodes)));
+        double decayRate = 0.9999;
+        ai.setExplorationRate(std::max(0.01, ai.getExplorationRate() * decayRate));
+        ai.setLearningRate(0.5 / (1.0 + i / static_cast<double>(episodes)));
 
         while (!game.isGameOver()) {
             auto move = ai.chooseMove(game);
@@ -25,15 +28,19 @@ void train (QLearningAgent& ai, int episodes) {
             game.move(move.first, move.second, curP);
 
             double reward = 0;
-            if (game.isGameOver()) reward = game.isWinningMove(move.first, move.second, curP) ? 1.0 : (game.getAvailableMoves().empty() ? 0.5 : -1.0);
-
+            if (game.isGameOver()) {
+                if (game.isWinningMove(move.first, move.second, curP)) reward = 1.0;
+                else if (game.isWinningMove(move.first, move.second, (curP == Square::XSQ ? Square::OSQ : Square::XSQ))) reward = -1.0;
+                else reward = 0.3;
+            }
+            
             ai.learn(prevState, move, game, reward);
             curP = (curP == Square::XSQ) ? Square::OSQ : Square::XSQ;
         }
     }
 
     auto end = std::chrono::steady_clock::now();
-    std::cout << "Complete in " << (end-start).count() << "\n";
+    std::cout << "Complete in " << std::chrono::duration_cast<std::chrono::seconds>(end-start).count() << "\n";
 }
 
 void play (QLearningAgent& ai) {
@@ -68,9 +75,11 @@ void play (QLearningAgent& ai) {
 int main () {
     QLearningAgent ai(0.1, 0.9, 0.3);
 
-    train(ai, 10000);
+    // train(ai, 100000);
+    // ai.savePolicy("ttt.policy");  
 
-    ai.savePolicy("ttt.policy");
+    ai.setExplorationRate(0.0);    
+    ai.loadPolicy("ttt.policy");  
 
     play(ai);
 

@@ -108,7 +108,9 @@ std::string Board::getStateString () const {
             }
         }
     }
-
+    
+    state += (getCurrentPlayer() == Square::XSQ) ? 'X' : 'O';
+    
     return state;
 }
 

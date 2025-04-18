@@ -32,7 +32,7 @@ std::pair<int, int>  QLearningAgent::chooseMove (const Board& board) {
     for (const auto& move : availableMoves) {
         const int i = actionToIndex(move);
 
-        if (qValues[i] > bestQ) {
+        if (qValues[i] > bestQ || (qValues[i] == bestQ && probDist(gen) < 0.5)) {
             bestQ = qValues[i];
             bestMove = move;
         }
