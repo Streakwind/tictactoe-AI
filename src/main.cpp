@@ -9,14 +9,6 @@
 #include<cstdlib>
 #endif
 
-void clear () {
-    #ifdef _WIN32
-        system("cls");
-    #else
-        system("clear");
-    #endif
-}
-
 void train (QLearningAgent& ai, int episodes) {
     auto start = std::chrono::steady_clock::now();
 
@@ -50,7 +42,6 @@ void play (QLearningAgent& ai) {
     Square aiPlayer = Square::OSQ;
     
     while (!game.isGameOver()) {
-        clear();
         game.dispBoard();
         
         if (game.getCurrentPlayer() == player) {
@@ -67,7 +58,6 @@ void play (QLearningAgent& ai) {
         }
     }
     
-    clear();
     game.dispBoard();
 
     if (game.isWinningMove(-1, -1, player)) std::cout << "you win\n";
