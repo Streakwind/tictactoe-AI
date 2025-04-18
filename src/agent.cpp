@@ -25,7 +25,7 @@ std::pair<int, int>  QLearningAgent::chooseMove (const Board& board) {
     const std::string state = board.getStateString();
     auto qValues = qTable[state];
     auto bestMove = availableMoves[0];
-    double bestQ = std::numeric_limits<double>::infinity();
+    double bestQ = -1 * std::numeric_limits<double>::infinity();
 
     for (const auto& move : availableMoves) {
         const int i = actionToIndex(move);
@@ -79,6 +79,7 @@ void QLearningAgent::loadPolicy (const std::string &filepath) {
         iss >> state;
 
         std::vector<double> qValues(9);
+        for (int i = 0; i < 9; i++) iss >> qValues[i];
 
         newQTable[state] = qValues;
     }

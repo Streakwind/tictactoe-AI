@@ -47,9 +47,9 @@ bool Board::isGameOver () const {
 
 bool Board::isWinningMove (int x, int y, Square player) const {
     if (x == -1 && y == -1) {
-        for (x = 0; x < 3; x++) {
-            for (y = 0; y < 3; y++) {
-                if (checkWin(x, y, player)) return true;
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (checkWin(i, j, player)) return true;
             }
         }
 
