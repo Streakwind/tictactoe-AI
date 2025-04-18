@@ -30,10 +30,10 @@ void Board::dispBoard () {
         for (int j = 0; j < 3; j++) {
             std::cout << " --- ";
         }
-        
 
         std::cout << "\n";
     }
+
     std::cout << std::flush;
 }
 
@@ -41,72 +41,36 @@ bool Board::isEmpty (int x, int y) {
     return Board::board[x][y] == Square::NONE;
 }
 
-bool Board::isGameOver () {
-    // rows
-    for (int i = 0; i < 3; i++) {
-        if (board[i][0] != Square::NONE && 
-            board[i][0] == board[i][1] && 
-            board[i][1] == board[i][2]) {
-            Board::dispBoard();
-            std::cout << ((board[i][0] == Square::XSQ) ? "X" : "O") << " won!\n";
-            return true;
-        }
-    }
-    
-    // columns
-    for (int j = 0; j < 3; j++) {
-        if (board[0][j] != Square::NONE &&
-            board[0][j] == board[1][j] &&
-            board[1][j] == board[2][j]) {
-            Board::dispBoard();
-            std::cout << ((board[0][j] == Square::XSQ) ? "X" : "O") << " won!\n";
-            return true;
-        }
-    }
-    
-    // diagonals
-    if (board[0][0] != Square::NONE &&
-        board[0][0] == board[1][1] && 
-        board[1][1] == board[2][2]) {
-        Board::dispBoard();
-        std::cout << ((board[0][0] == Square::XSQ) ? "X" : "O") << " won!\n";
-        return true;
-    }
-    
-    if (board[0][2] != Square::NONE &&
-        board[0][2] == board[1][1] &&
-        board[1][1] == board[2][0]) {
-        Board::dispBoard();
-        std::cout << ((board[0][2] == Square::XSQ) ? "X" : "O") << " won!\n";
-        return true;
-    }
-    
-    if (filled == 9) {
-        Board::dispBoard();
-        std::cout << "It's a tie!\n";
-        return true;
-    }
+bool Board::isGameOver () const {
+    return (filled == 9) || isWinningMove(-1, -1, Square::XSQ) || isWinningMove(-1, -1, Square::OSQ);
+}
 
+bool Board::isWinningMove (int x, int y, Square player) const {
+    if (board[x][y] != player) return false;
+    
+    // row
+    if (board[x][0] == player && board[x][1] == player && board[x][2] == player)
+        return true;
+    
+    // column
+    if (board[0][y] == player && board[1][y] == player && board[2][y] == player)
+        return true;
+    
+    // diagnol
+    if (x == y && board[0][0] == player && board[1][1] == player && board[2][2] == player)
+        return true;
+    
+    if (x + y == 2 && board[0][2] == player && board[1][1] == player && board[2][0] == player)
+        return true;
+    
     return false;
 }
 
-void Board::move (Square player) {
-    dispBoard();
-
-    int x, y;
-    while (true) {        
-        std::cin >> x >> y;
-        if (x >= 0 && x < 3 && y >= 0 && y < 3 && isEmpty(x, y)) break;
-    }
+void Board::move (int x, int y, Square player) {
+    if (x < 0 || x > 2 || y < 0 || y > 2 || !isEmpty(x, y)) return;
 
     board[x][y] = player;
     filled++;
-
-    #ifdef _WIN32
-        system("cls");
-    #else
-        system("clear");
-    #endif
 }
 
 std::vector<std::pair<int, int>> Board::getAvailableMoves () const {
@@ -136,3 +100,7 @@ std::string Board::getStateString () const {
 
     return state;
 }
+
+Square Board::getSquare(int x, int y) const { return board[x][y]; }
+
+Square Board::getCurrentPlayer() const { return (filled % 2 == 0) ? Square::XSQ : Square::OSQ; }
