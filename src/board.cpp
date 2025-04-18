@@ -46,31 +46,42 @@ bool Board::isGameOver () const {
 }
 
 bool Board::isWinningMove (int x, int y, Square player) const {
+    if (x == -1 && y == -1) {
+        for (x = 0; x < 3; x++) {
+            for (y = 0; y < 3; y++) {
+                if (checkWin(x, y, player)) return true;
+            }
+        }
+
+        return false;
+    }
+    
+    return checkWin(x, y, player);
+}
+
+bool Board::checkWin (int x, int y, Square player) const {
     if (board[x][y] != player) return false;
     
     // row
-    if (board[x][0] == player && board[x][1] == player && board[x][2] == player)
-        return true;
+    if (board[x][0] == player && board[x][1] == player && board[x][2] == player) return true;
     
     // column
-    if (board[0][y] == player && board[1][y] == player && board[2][y] == player)
-        return true;
+    if (board[0][y] == player && board[1][y] == player && board[2][y] == player) return true;
     
     // diagnol
-    if (x == y && board[0][0] == player && board[1][1] == player && board[2][2] == player)
-        return true;
-    
-    if (x + y == 2 && board[0][2] == player && board[1][1] == player && board[2][0] == player)
-        return true;
-    
+    if (x == y && board[0][0] == player && board[1][1] == player && board[2][2] == player) return true;
+    if (x + y == 2 && board[0][2] == player && board[1][1] == player && board[2][0] == player) return true;
+
     return false;
 }
 
-void Board::move (int x, int y, Square player) {
-    if (x < 0 || x > 2 || y < 0 || y > 2 || !isEmpty(x, y)) return;
+bool Board::move (int x, int y, Square player) {
+    if (x < 0 || x > 2 || y < 0 || y > 2 || !isEmpty(x, y)) return false;
 
     board[x][y] = player;
     filled++;
+
+    return true;
 }
 
 std::vector<std::pair<int, int>> Board::getAvailableMoves () const {
