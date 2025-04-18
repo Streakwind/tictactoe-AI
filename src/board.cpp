@@ -41,7 +41,7 @@ bool Board::isEmpty (int x, int y) {
     return Board::board[x][y] == Square::NONE;
 }
 
-bool Board::isGameOver() {
+bool Board::isGameOver () {
     // rows
     for (int i = 0; i < 3; i++) {
         if (board[i][0] != Square::NONE && 
@@ -90,7 +90,7 @@ bool Board::isGameOver() {
     return false;
 }
 
-void Board::move(Square player) {
+void Board::move (Square player) {
     dispBoard();
 
     int x, y;
@@ -109,7 +109,7 @@ void Board::move(Square player) {
     #endif
 }
 
-std::vector<std::pair<int, int>> Board::getAvailableMoves() const {
+std::vector<std::pair<int, int>> Board::getAvailableMoves () const {
     std::vector<std::pair<int, int>> moves;
     for (int x = 0; x < 3; x++) {
         for (int y = 0; y < 3; y++) {
@@ -122,7 +122,7 @@ std::vector<std::pair<int, int>> Board::getAvailableMoves() const {
     return moves;
 }
 
-std::string Board::getStateString() const {
+std::string Board::getStateString () const {
     std::string state;
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 3; j++) {

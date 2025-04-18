@@ -17,9 +17,9 @@ private:
 
 public:
     Board ();
-    bool isEmpty(int x, int y); 
-    bool isGameOver();
-    void move(Square player);
-    std::vector<std::pair<int, int>> getAvailableMoves() const; 
-    std::string getStateString() const;
+    bool isEmpty (int x, int y); 
+    bool isGameOver ();
+    void move (Square player);
+    std::vector<std::pair<int, int>> getAvailableMoves () const; 
+    std::string getStateString () const;
 };
