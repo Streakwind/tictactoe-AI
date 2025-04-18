@@ -27,7 +27,7 @@ void train (QLearningAgent& ai, int episodes) {
     }
 
     auto end = std::chrono::steady_clock::now();
-    std::cout << "Complete in " << (end-start).count();
+    std::cout << "Complete in " << (end-start).count() << "\n";
 }
 
 void play (QLearningAgent& ai) {
@@ -67,6 +67,6 @@ int main () {
     ai.savePolicy("ttt.policy");
 
     play(ai);
-    
+
     return 0;
 }
