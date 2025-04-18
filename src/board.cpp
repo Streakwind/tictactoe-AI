@@ -1,4 +1,4 @@
-#include "../include/game.h"
+#include "../include/board.h"
 #include <iostream>
 
 #ifdef _WIN32
@@ -107,4 +107,32 @@ void Board::move(Square player) {
     #else
         system("clear");
     #endif
+}
+
+std::vector<std::pair<int, int>> Board::getAvailableMoves() const {
+    std::vector<std::pair<int, int>> moves;
+    for (int x = 0; x < 3; x++) {
+        for (int y = 0; y < 3; y++) {
+            if (board[x][y] == Square::NONE) {
+                moves.push_back(std::make_pair(x, y));
+            }
+        }
+    }
+
+    return moves;
+}
+
+std::string Board::getStateString() const {
+    std::string state;
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            switch (board[i][j]) {
+                case Square::XSQ: state += 'X'; break;
+                case Square::OSQ: state += 'O'; break;
+                case Square::NONE: state += ' '; break;
+            }
+        }
+    }
+
+    return state;
 }

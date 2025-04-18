@@ -10,7 +10,8 @@ include_directories(include)
 
 set(SOURCES 
     src/main.cpp
-    src/game.cpp
+    src/board.cpp
+    src/agent.cpp
 )
 
 add_executable(tictactoe ${SOURCES})

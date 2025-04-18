@@ -1,4 +1,6 @@
 #pragma once
+#include <vector>
+#include<string>
 
 enum class Square {
     NONE,
@@ -18,4 +20,6 @@ public:
     bool isEmpty(int x, int y); 
     bool isGameOver();
     void move(Square player);
+    std::vector<std::pair<int, int>> getAvailableMoves() const; 
+    std::string getStateString() const;
 };

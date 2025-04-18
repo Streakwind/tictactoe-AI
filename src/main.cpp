@@ -1,7 +1,8 @@
 
 
 #include <iostream>
-#include "../include/game.h"
+#include "../include/board.h"
+#include "../include/agent.h"
 
 int main () {
     Board game;
